@@ -22,16 +22,16 @@ class GamesController < ApplicationController
     if session[:current_user_id].nil?
       session[:current_user_id] = 0
     end
-    if @score.class == Integer
-      session[:current_user_id] += @score
-      @score_total = session[:current_user_id]
-      @score = "Congratulations, your score is #{@score}"
-    end
-    url = "https://wagon-dictionary.herokuapp.com/#{params[:word]}"
+    url = "https://dictionary.lewagon.com/#{params[:word]}"
     user_serialized = URI.open(url).read
     user = JSON.parse(user_serialized)
     unless user["found"]
       @score = "Sorry, but #{params[:word]} is not a valid english word."
     end
+    if @score.class == Integer
+      session[:current_user_id] += @score
+      @score = "Congratulations, your score is #{@score}"
+    end
+    @score_total = session[:current_user_id]
   end
 end
